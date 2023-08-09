@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,7 +15,8 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+#ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -107,9 +115,15 @@ then
   compinit
 fi
 
+if type rg &> /dev/null; then
+  export FZF_DEFAULT_COMMAND='rg --files'
+  export FZF_DEFAULT_OPTS='-m'
+fi
+
 alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
 source <(kubectl completion zsh)
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export PATH="$PATH:/usr/local/opt/riscv-gnu-toolchain/bin"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/path.zsh.inc"; fi
@@ -121,8 +135,13 @@ PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 PATH="$HOME/bin:$PATH"
 alias proxy='export http_proxy=http://127.0.0.1:8889;export https_proxy=http://127.0.0.1:8999;export ALL_PROXY=socks5://127.0.0.1:1089'
 alias unproxy='unset ALL_PROXY;unset http_proxy;unset https_proxy'
-export PATH="/opt/homebrew/opt/php@7.4/bin:$PATH"
-export PATH="/opt/homebrew/opt/php@7.4/sbin:$PATH"
 
 alias em="emacsclient -c -t"
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias sd='bash ~/.commands/symfony-dev.sh'
+alias st='bash ~/.commands/symfony-test.sh'
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
