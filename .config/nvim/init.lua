@@ -255,6 +255,7 @@ vim.o.hlsearch = false
 
 -- Make line numbers default
 vim.wo.number = true
+vim.wo.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -335,24 +336,18 @@ require('telescope').setup {
         ["K"] = "cycle_history_prev",
       }
     },
-  },
-  pickers = {
-    find_files = {
-      theme = "ivy",
+    layout_strategy = 'vertical',
+    layout_config = {
+        vertical = {
+          height = 0.99,
+          preview_cutoff = 0,
+          prompt_position = "bottom",
+          width = 0.99
+        }
     },
-    live_grep = {
-      theme = "ivy",
-    },
-    oldfiles = {
-      theme = "ivy",
-    },
-    buffers = {
-      theme = "ivy",
-    }
   },
   extensions = {
     file_browser = {
-      theme = "ivy",
       -- disables netrw and use telescope-file-browser in its place
       hijack_netrw = true,
       mappings = {
@@ -683,3 +678,5 @@ vim.keymap.set('n', '<Space>', function()
   vim.cmd('normal! ;')
 end, {})
 vim.keymap.set({ 'n', 'v' }, '<leader>p', '"_dP', {})
+vim.g.sleuth_automatic_bases = {".c", ".h"}
+vim.g.sleuth_target_indent = 2
